@@ -6,20 +6,24 @@ LABEL maintainer="github@sytone.com" \
       org.opencontainers.image.title="Container hosted Obsidian MD" \
       org.opencontainers.image.description="Hosted Obsidian instance allowing access via web browser"
 
+# Get Architekture
+ARG BUILDARCH
+
 # Update and install extra packages.
 RUN echo "**** install packages ****" && \
     apt-get update && \
     apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji git ssh-askpass && \
+    if [ $BUILDARCH = "arm64" ]; then \
+        # Dependecies specific for Arm64
+        # Workaorund for AppImage Bug! Remove when Issue Closed: https://github.com/AppImage/AppImageKit/issues/964
+        apt-get install -y --no-install-recommends zlib1g-dev; \
+    fi; \
     apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
-# Workaorund for AppImage Bug! Remove when Issue Closed: https://github.com/AppImage/AppImageKit/issues/964
-RUN apt.get install -y --no-install-recommends zlib1g-dev
 
 # Set version label
 ARG OBSIDIAN_VERSION=1.5.3
 
-# Get Architekture
-ARG BUILDARCH
 ARG DOWNLOAD_URL_BASE="https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}"
 # Download and install Obsidian
 RUN echo "**** Downloading Obsidian for "$BUILDARCH" ****" && \
