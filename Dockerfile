@@ -16,7 +16,7 @@ RUN echo "**** install packages ****" && \
 RUN apt.get install -y --no-install-recommends zlib1g-dev
 
 # Set version label
-ARG OBSIDIAN_VERSION=1.4.16
+ARG OBSIDIAN_VERSION=1.5.3
 
 # Get Architekture
 ARG BUILDARCH
