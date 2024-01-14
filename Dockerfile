@@ -16,11 +16,11 @@ RUN echo "**** install packages ****" && \
 ARG OBSIDIAN_VERSION=1.4.16
 
 # Get Architekture
-ARG TARGETARCH
+ARG BUILDARCH
 ARG DOWNLOAD_URL_BASE="https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}"
 # Download and install Obsidian
-RUN echo "**** Downloading Obsidian for "$TARGETARCH" ****" && \
-    if [ $TARGETARCH = "arm64" ]; then \
+RUN echo "**** Downloading Obsidian for "$BUILDARCH" ****" && \
+    if [ $BUILDARCH = "arm64" ]; then \
         DOWNLOAD_URL_BASE="${DOWNLOAD_URL_BASE}-arm64"; \
     fi; \
     DOWNLOAD_URL_BASE=${DOWNLOAD_URL_BASE}".AppImage" && \
