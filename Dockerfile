@@ -15,10 +15,24 @@ RUN echo "**** install packages ****" && \
 # Set version label
 ARG OBSIDIAN_VERSION=1.4.16
 
+# Get Architekture
+ARG TARGETARCH
+ARG DOWNLOAD_URL_BASE="https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/Obsidian-${OBSIDIAN_VERSION}"
 # Download and install Obsidian
-RUN echo "**** download obsidian ****" && \
-    curl --location --output obsidian.deb "https://github.com/obsidianmd/obsidian-releases/releases/download/v${OBSIDIAN_VERSION}/obsidian_${OBSIDIAN_VERSION}_amd64.deb" && \
-    dpkg -i obsidian.deb
+RUN echo "**** Downloading Obsidian for "$TARGETARCH" ****" && \
+    if [ $TARGETARCH = "arm64" ]; then \
+        DOWNLOAD_URL_BASE="${DOWNLOAD_URL_BASE}-arm64"; \
+    fi; \
+    DOWNLOAD_URL_BASE=${DOWNLOAD_URL_BASE}".AppImage" && \
+    echo "Downloading from: "${DOWNLOAD_URL_BASE} && \
+    curl --location --fail --output obsidian.AppImage $DOWNLOAD_URL_BASE
+
+#ADD ${DOWNLOAD_URL_BASE}".AppImage" /
+
+RUN echo "**** Extracting App ****" && \
+    echo $(ls -l obsidian.AppImage) && \
+    chmod +x obsidian.AppImage && \
+    ./obsidian.AppImage --appimage-extract
 
 # Environment variables
 ENV CUSTOM_PORT="8080" \
