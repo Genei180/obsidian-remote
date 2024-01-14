@@ -12,6 +12,9 @@ RUN echo "**** install packages ****" && \
     apt-get install -y --no-install-recommends curl libgtk-3-0 libnotify4 libatspi2.0-0 libsecret-1-0 libnss3 desktop-file-utils fonts-noto-color-emoji git ssh-askpass && \
     apt-get autoclean && rm -rf /var/lib/apt/lists/* /var/tmp/* /tmp/*
 
+# Workaorund for AppImage Bug! Remove when Issue Closed: https://github.com/AppImage/AppImageKit/issues/964
+RUN apt.get install -y --no-install-recommends zlib1g-dev
+
 # Set version label
 ARG OBSIDIAN_VERSION=1.4.16
 
