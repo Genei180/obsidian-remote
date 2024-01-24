@@ -41,6 +41,9 @@ RUN echo "**** Extracting App ****" && \
     chmod +x obsidian.AppImage && \
     ./obsidian.AppImage --appimage-extract
 
+# Make it Executable
+RUN chmod +x /squashfs-root/obsidian
+
 # Environment variables
 ENV CUSTOM_PORT="8080" \
     CUSTOM_HTTPS_PORT="8443" \
